@@ -4,7 +4,10 @@ void msgDiag(BuildContext context, String message) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Aviso'),
+      title: const Text(
+        'Aviso',
+        textAlign: TextAlign.center,
+      ),
       content: Text(message),
       actions: [
         TextButton(

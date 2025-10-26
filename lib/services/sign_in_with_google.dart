@@ -8,10 +8,14 @@ import 'package:link_class_mobile/menu.dart';
 import 'package:link_class_mobile/util/error_msg.dart';
 
 Future<void> signInWithGoogle(BuildContext context, String deviceId) async {
-  try {
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(builder: (_) => const Menu()),
+  );
+  return;
+  /*try {
     await GoogleSignIn.instance.initialize(
       serverClientId:
-          '42851321777-1tpjtassb4vqfkp61stv6287flq6iejl.apps.googleusercontent.com',
+          '824655998309-58eogglqo4lsds5q3jjf3v81blf7h6ir.apps.googleusercontent.com',
     );
 
     final GoogleSignInAccount account = await GoogleSignIn.instance
@@ -48,5 +52,5 @@ Future<void> signInWithGoogle(BuildContext context, String deviceId) async {
     if (!context.mounted) return;
 
     msgDiag(context, 'Unexpected error: $e');
-  }
+  }*/
 }
