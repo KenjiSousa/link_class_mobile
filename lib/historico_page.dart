@@ -41,7 +41,7 @@ class HistoricoPage extends StatelessWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  'assets/logo.png', // substitua pela sua logo
+                  'assets/logo_unipar.svg', 
                   height: 30,
                 ),
               ),
@@ -60,7 +60,7 @@ class HistoricoPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
