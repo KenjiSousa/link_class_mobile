@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:jovial_svg/jovial_svg.dart';
+import 'package:link_class_mobile/logos.dart';
 import 'package:link_class_mobile/qr_scanner.dart';
 import 'package:link_class_mobile/historico_page.dart';
 import 'package:link_class_mobile/util/error_msg.dart';
@@ -89,18 +88,7 @@ class _MenuState extends State<Menu> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(width: 25),
-                ScalableImageWidget.fromSISource(
-                  si: ScalableImageSource.fromSvg(
-                    rootBundle,
-                    'assets/images/logo_unipar.svg',
-                  ),
-                ),
-              ],
-            ),
+            logoUnipar(),
             const SizedBox(height: 20),
             const Text(
               'Seja Bem-Vindo!',
