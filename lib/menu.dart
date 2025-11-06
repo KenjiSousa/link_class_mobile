@@ -19,10 +19,10 @@ class _MenuState extends State<Menu> {
   @override
   void initState() {
     super.initState();
-    _checkAndAskForRA();
+    _verificaEPedeRA();
   }
 
-  Future<void> _checkAndAskForRA() async {
+  Future<void> _verificaEPedeRA() async {
     final prefs = await SharedPreferences.getInstance();
     final ra = prefs.getString('ra');
 
@@ -50,21 +50,20 @@ class _MenuState extends State<Menu> {
           actions: [
             TextButton(
               onPressed: () async {
-                final currentContext = context; // guarda o contexto localmente
                 final ra = _raController.text.trim();
 
                 if (ra.isEmpty) {
-                  msgDiag(currentContext, 'Por favor, digite o RA.');
+                  msgDiag(context, 'Por favor, digite o RA.');
                   return;
                 }
 
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setString('ra', ra);
 
-                if (!mounted) return; // checa se o widget ainda está ativo
-
-                Navigator.of(currentContext).pop();
-                msgDiag(currentContext, 'RA salvo com sucesso!');
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  msgDiag(context, 'RA salvo com sucesso!');
+                }
               },
               child: const Text('Confirmar'),
             ),
@@ -129,8 +128,7 @@ class _MenuState extends State<Menu> {
             ElevatedButton(
               style: buttonStyle,
               onPressed: () {
-                Navigator.push(
-                  context,
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const HistoricoPage(),
                   ),
@@ -142,25 +140,5 @@ class _MenuState extends State<Menu> {
         ),
       ),
     );
-  }
-}
-
-class RaStore {
-  const RaStore();
-
-  Future<void> gravaRa(BuildContext context, VoidCallback onSuccess) async {
-    final currentContext = context; // guarda o contexto localmente
-    final ra = _raController.text.trim();
-
-    if (ra.isEmpty) {
-      msgDiag(currentContext, 'Por favor, digite o RA.');
-      return;
-    }
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('ra', ra);
-
-    Navigator.of(currentContext).pop();
-    msgDiag(currentContext, 'RA salvo com sucesso!');
   }
 }

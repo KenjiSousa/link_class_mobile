@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:jovial_svg/jovial_svg.dart';
 
 class HistoricoPage extends StatelessWidget {
   const HistoricoPage({super.key});
@@ -33,18 +35,18 @@ class HistoricoPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color(0xff3b3b3b),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Image.asset(
-                  'assets/logo_unipar.svg', 
-                  height: 30,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(width: 15),
+                ScalableImageWidget.fromSISource(
+                  si: ScalableImageSource.fromSvg(
+                    rootBundle,
+                    'assets/images/logo_unipar.svg',
+                  ),
+                  scale: 0.6,
                 ),
-              ),
+              ],
             ),
             const SizedBox(height: 16),
             Expanded(
