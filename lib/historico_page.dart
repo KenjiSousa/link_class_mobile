@@ -34,7 +34,17 @@ class HistoricoPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           children: [
-            logoUnipar(0.6),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[900],
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Center(
+                child: logoUnipar(0.25),
+              ),
+            ),
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(

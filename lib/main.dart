@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:jovial_svg/dom.dart';
+import 'package:link_class_mobile/logos.dart';
 import 'package:link_class_mobile/services/sign_in_with_google.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import 'services/device_id.dart';
+
+String? deviceId;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // final AuthData authData = await getOrCreateAuthData();
 
-  final String deviceId = await getOrCreateDeviceId();
+  deviceId = await getOrCreateDeviceId();
 
-  runApp(MyApp(deviceId: deviceId));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String deviceId;
-  const MyApp({super.key, required this.deviceId});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(deviceId: deviceId),
+      home: LoginPage(),
     );
   }
 }
 
 class LoginPage extends StatelessWidget {
-  final String deviceId;
-  const LoginPage({super.key, required this.deviceId});
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,12 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            logoUnipar(),
+            const SizedBox(height: 100),
+            const Text("Utilize sua conta da Unipar"),
             SignInButton(
               Buttons.google,
-              onPressed: () => signInWithGoogle(context, deviceId),
+              onPressed: () => signInWithGoogle(context),
             ),
           ],
         ),
