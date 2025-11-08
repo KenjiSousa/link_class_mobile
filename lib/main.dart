@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jovial_svg/dom.dart';
 import 'package:link_class_mobile/logos.dart';
 import 'package:link_class_mobile/services/sign_in_with_google.dart';
 import 'package:sign_in_button/sign_in_button.dart';
