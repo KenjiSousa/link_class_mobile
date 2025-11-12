@@ -83,7 +83,7 @@ class _MenuState extends State<Menu> {
                     final ra = _raController.text.trim();
 
                     final response = await http.post(
-                      Uri.parse('http://192.168.41.105:3000/api/usuario/setRa'),
+                      Uri.parse('http://192.168.50.181:3000/api/usuario/setRa'),
                       headers: {
                         'Content-Type': 'application/json',
                         'authorization': 'Bearer ${AuthToken.jwt}',
