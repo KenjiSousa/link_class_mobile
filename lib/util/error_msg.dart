@@ -15,6 +15,8 @@ Future<void> msgDiag(BuildContext context, String message) async {
           child: const Text('OK'),
         )
       ],
+      elevation: 10,
+      shadowColor: Colors.black,
     )
   );
 }

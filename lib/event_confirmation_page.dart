@@ -1,10 +1,15 @@
-import 'dart:convert'; 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:link_class_mobile/auth_token.dart';
+import 'package:link_class_mobile/util/error_msg.dart';
 
 class EventConfirmacaoPage extends StatelessWidget {
-  final String qrData; 
+  final Map<String, dynamic> evento;
+  final String hashConfirmacao;
 
-  const EventConfirmacaoPage({super.key, required this.qrData});
+  const EventConfirmacaoPage({super.key, required this.evento, required this.hashConfirmacao});
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
@@ -33,29 +38,7 @@ class EventConfirmacaoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> eventData = {};
-    String errorMessage = '';
-
-    try {
-      eventData = jsonDecode(qrData) as Map<String, dynamic>; 
-    } catch (e) {
-      errorMessage = 'QR Code inválido ou em formato inesperado.';
-    }
-
-    if (errorMessage.isNotEmpty) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Erro na Leitura')),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              '$errorMessage\n\nDado lido: $qrData',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      );
-    }
+    final String dsNumero = evento['numero'] != null && evento['numero'].toString().isNotEmpty ? ', ${evento["numero"]}' : '';
 
     return Scaffold(
       appBar: AppBar(
@@ -73,29 +56,28 @@ class EventConfirmacaoPage extends StatelessWidget {
               color: Colors.blueAccent,
             ),
             const SizedBox(height: 20),
-            // Título
             Text(
               'Confirmação de Evento',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 30),
-            
-            _buildInfoRow('Evento:', eventData['nome'] ?? 'Não informado'),
-            _buildInfoRow('Data:', eventData['data'] ?? 'Não informado'),
-            _buildInfoRow('Horário:', eventData['horario'] ?? 'Não informado'),
-            _buildInfoRow('Local:', eventData['local'] ?? 'Não informado'),
-            
+
+            _buildInfoRow('Evento:', evento['nome'] ?? 'Não informado'),
+            _buildInfoRow('Data:', evento['data'] ?? 'Não informado'),
+            _buildInfoRow('Horário:', evento['hr_ini'] ?? 'Não informado'),
+            _buildInfoRow('Local:', '${evento["logradouro"]}$dsNumero'),
+
             const Spacer(),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(false); 
+                    Navigator.of(context).pop(false);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[600],
@@ -103,10 +85,38 @@ class EventConfirmacaoPage extends StatelessWidget {
                   ),
                   child: const Text('Cancelar', style: TextStyle(color: Colors.white)),
                 ),
-                
+
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true); 
+                  onPressed: () async {
+                    final response = await http.get(
+                      Uri.parse('http://192.168.15.11:3000/api/presenca-link/verify/?hash=$hashConfirmacao'),
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': 'Bearer ${AuthToken.jwt}',
+                      },
+                    );
+
+                    if (response.statusCode != 200) {
+                      final res = jsonDecode(response.body);
+
+                      if (context.mounted) {
+                        await msgDiag(
+                          context,
+                          'Falha ao confirmar presença com o servidor. Causa: ${res["message"]}',
+                        );
+                      }
+                    } else {
+                      if (context.mounted) {
+                        await msgDiag(
+                          context,
+                          'Presença registrada com sucesso!',
+                        );
+                      }
+
+                      if (context.mounted) {
+                        Navigator.of(context).pop(false);
+                      }
+                    }
                   },
                    style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
