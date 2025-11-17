@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:link_class_mobile/auth_token.dart';
+import 'package:link_class_mobile/event_confirmation_page.dart';
 import 'package:link_class_mobile/historico_page.dart';
 import 'package:link_class_mobile/logos.dart';
 import 'package:link_class_mobile/main.dart';
@@ -83,7 +84,7 @@ class _MenuState extends State<Menu> {
                     final ra = _raController.text.trim();
 
                     final response = await http.post(
-                      Uri.parse('http://192.168.41.105:3000/api/usuario/setRa'),
+                      Uri.parse('http://192.168.50.181:3000/api/usuario/setRa'),
                       headers: {
                         'Content-Type': 'application/json',
                         'authorization': 'Bearer ${AuthToken.jwt}',
@@ -172,8 +173,29 @@ class _MenuState extends State<Menu> {
                   MaterialPageRoute(builder: (_) => const QRScannerPage()),
                 );
 
-                if (scannedCode != null && context.mounted) {
-                  await msgDiag(context, 'Código lido: $scannedCode');
+                if (scannedCode == null) {
+                  if (context.mounted) await msgDiag(context, "Erro: Conteúdo do QR Code não foi lido com sucesso.");
+                  return;
+                }
+
+                final Map<String, dynamic> dadosPresenca = jsonDecode(scannedCode);
+
+                final dadosEvento = await http.get(
+                  Uri.parse('http://192.168.15.11:3000/api/evento/${dadosPresenca["idEvento"]}'),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ${AuthToken.jwt}',
+                  },
+                );
+
+                final Map<String, dynamic> evento = jsonDecode(dadosEvento.body);
+
+                if (context.mounted) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EventConfirmacaoPage(evento: evento, hashConfirmacao: dadosPresenca['hash']),
+                    ),
+                  );
                 }
               },
               child: const Text('Ler QR Code'),
