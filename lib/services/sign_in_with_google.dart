@@ -12,7 +12,7 @@ Future<void> signInWithGoogle(BuildContext context) async {
   try {
     await GoogleSignIn.instance.initialize(
       serverClientId:
-      '824655998309-58eogglqo4lsds5q3jjf3v81blf7h6ir.apps.googleusercontent.com',
+      '42851321777-1tpjtassb4vqfkp61stv6287flq6iejl.apps.googleusercontent.com',
     );
 
     final GoogleSignInAccount account = await GoogleSignIn.instance
@@ -21,7 +21,7 @@ Future<void> signInWithGoogle(BuildContext context) async {
     final GoogleSignInAuthentication auth = account.authentication;
 
     final response = await http.post(
-      Uri.parse('http://192.168.50.181:3000/api/login'),
+      Uri.parse('http://blkpearl.org/api/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'idToken': auth.idToken, 'deviceId': deviceId}),
     );

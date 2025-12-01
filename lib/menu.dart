@@ -84,7 +84,7 @@ class _MenuState extends State<Menu> {
                     final ra = _raController.text.trim();
 
                     final response = await http.post(
-                      Uri.parse('http://192.168.50.181:3000/api/usuario/setRa'),
+                      Uri.parse('http://blkpearl.org/api/usuario/setRa'),
                       headers: {
                         'Content-Type': 'application/json',
                         'authorization': 'Bearer ${AuthToken.jwt}',
@@ -181,7 +181,7 @@ class _MenuState extends State<Menu> {
                 final Map<String, dynamic> dadosPresenca = jsonDecode(scannedCode);
 
                 final dadosEvento = await http.get(
-                  Uri.parse('http://192.168.15.11:3000/api/evento/${dadosPresenca["idEvento"]}'),
+                  Uri.parse('http://blkpearl.org/api/evento/${dadosPresenca["idEvento"]}'),
                   headers: {
                     'Content-Type': 'application/json',
                     'authorization': 'Bearer ${AuthToken.jwt}',

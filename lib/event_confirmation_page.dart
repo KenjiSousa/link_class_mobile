@@ -89,7 +89,7 @@ class EventConfirmacaoPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     final response = await http.get(
-                      Uri.parse('http://192.168.15.11:3000/api/presenca-link/verify/?hash=$hashConfirmacao'),
+                      Uri.parse('http://blkpearl.org/api/presenca-link/verify/?hash=$hashConfirmacao'),
                       headers: {
                         'Content-Type': 'application/json',
                         'authorization': 'Bearer ${AuthToken.jwt}',

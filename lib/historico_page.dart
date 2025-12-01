@@ -25,7 +25,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
   Future<void> carregarHistorico() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.50.181:3000/api/presenca'),
+        Uri.parse('http://blkpearl.org/api/presenca'),
         headers: {
           'Content-Type': 'application/json',
           'authorization': 'Bearer ${AuthToken.jwt}',
